@@ -1,45 +1,41 @@
 import { useState } from "react";
-const DropDown = () => {
+const DropDown = ({ options, label, setOption, optionValue }) => {
   const [showOptions, setShowOptions] = useState(false);
-  const options = ["test", "twst2", "sdfsdf"];
-  const handleOptions = (e) => {};
+  const [buttonLabel, setButtonLable] = useState(label);
+  const handleOptions = (option) => {
+    setOption(option);
+    setButtonLable(option);
+    setShowOptions(false);
+  };
   return (
-    <>
+    <div className=" py-2 ">
       <button
-        className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2.5 text-center inline-flex items-center"
+        className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2.5 text-center inline-flex items-center w-full "
         type="button"
         data-dropdown-toggle="dropdown"
         onClick={(e) => setShowOptions(!showOptions)}
       >
-        Dropdown button
+        {buttonLabel}
       </button>
-      {/* <div
-        className="hidden bg-white text-base z-50 list-none divide-y divide-gray-100 rounded shadow my-4"
-        id="dropdown"
-      > */}
-      {/* <div className="px-4 py-3">
-          <span className="block text-sm">Bonnie Green</span>
-          <span className="block text-sm font-medium text-gray-900 truncate">
-            name@flowbite.com
-          </span>
-        </div> */}
       {showOptions && (
         <ul className="py-1" aria-labelledby="dropdown">
+          {/* <select>
+                
+            </select> */}
           {options &&
             options.map((option) => (
-              <li>
-                <a
-                  href="#"
-                  className="text-sm hover:bg-gray-100 text-gray-700 block px-4 py-2"
-                >
-                  {option}
-                </a>
-              </li>
+              <option
+                className="text-sm hover:bg-gray-100 text-gray-700 block px-4 py-2"
+                onClick={(e) => {
+                  handleOptions(option);
+                }}
+              >
+                {option}
+              </option>
             ))}
         </ul>
       )}
-      {/* </div> */}
-    </>
+    </div>
   );
 };
 

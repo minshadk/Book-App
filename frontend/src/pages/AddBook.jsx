@@ -1,6 +1,7 @@
 import { useState } from "react";
 import DropDown from "../components/Inputs/DropDown";
 import TextInput from "../components/Inputs/TextInput";
+import YearPicker from "../components/Inputs/YearPicker";
 
 const AddBook = () => {
   const [title, setTitle] = useState(null);
@@ -13,6 +14,9 @@ const AddBook = () => {
   const [language, setLanguage] = useState(null);
   const [year, setYear] = useState(null);
   const [rating, setRating] = useState(null);
+
+  const options = ["test", "twst2", "sdfsdf"];
+  console.log(genre);
   return (
     <div className="min-h-full flex items-center justify-center  py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-md w-full space-y-8">
@@ -49,7 +53,19 @@ const AddBook = () => {
               textValue={imageUrl}
               setText={setImageUrl}
             />
-            <DropDown />
+            <TextInput
+              placeHolder={"Year"}
+              type={"number"}
+              textValue={year}
+              setText={setYear}
+            />
+            <DropDown label={"Genre"} setOption={setGenre} options={options} />
+            <DropDown
+              label={"language"}
+              setOption={setLanguage}
+              options={options}
+            />
+            <YearPicker />
           </div>
           <div>
             <button
