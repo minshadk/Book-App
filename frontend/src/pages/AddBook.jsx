@@ -1,5 +1,6 @@
 import { useState } from "react";
 import DropDown from "../components/Inputs/DropDown";
+import TextArea from "../components/Inputs/TextArea";
 import TextInput from "../components/Inputs/TextInput";
 import YearPicker from "../components/Inputs/YearPicker";
 
@@ -66,6 +67,7 @@ const AddBook = () => {
               options={options}
             />
             <YearPicker />
+            <TextArea label="Review" placeHolder={"Add Review"} />
           </div>
           <div>
             <button

@@ -4,6 +4,8 @@ import Layout from "./layout/Layout";
 import AddBook from "./pages/AddBook";
 import Home from "./pages/Home";
 import BookDetails from "./pages/BookDetails";
+import Login from "./pages/Login";
+import SignUp from "./pages/SignUp";
 
 function App() {
   return (
@@ -13,7 +15,14 @@ function App() {
         {/* <Route path="/" element={<Layout />}>
           <Route path="/" element={<Home />} />
         </Route> */}
-        <Route path="/" element={<BookDetails />} />
+        <Route path="/" element={<Layout />}>
+          <Route path="/" index element={<Home />} />
+          <Route path="/bookDetails" element={<BookDetails />} />
+          {/* <Route path="/browseBook"  element={<BrowseBooks />} /> */}
+        </Route>
+        <Route path="/addBook" element={<AddBook />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/singUp" element={<SignUp />} />
       </Routes>
     </BrowserRouter>
   );

@@ -1,3 +1,5 @@
+import TextArea from "./../components/Inputs/TextArea";
+
 const BookDetails = () => {
   return (
     <>
@@ -83,7 +85,7 @@ const BookDetails = () => {
         </p>
         <h1 class="text-2xl">Comments</h1>
 
-        <label
+        {/* <label
           for="message"
           class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-400"
         >
@@ -94,7 +96,8 @@ const BookDetails = () => {
           rows="4"
           class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
           placeholder="Your message..."
-        ></textarea>
+        ></textarea> */}
+        <TextArea label="Comment" placeHolder={"Add Your Comment"} />
         <div>
           <h1 class="text-1xl">user name</h1>
           <p>
@@ -110,6 +113,15 @@ const BookDetails = () => {
             <span>like </span>
             <span>dislike</span>
           </div>
+        </div>
+        <div>
+          <button
+            type="submit"
+            className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+          >
+            <span className="absolute left-0 inset-y-0 flex items-center pl-3"></span>
+            Login in
+          </button>
         </div>
       </div>
     </>
