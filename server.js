@@ -4,14 +4,13 @@ const app = require("./app");
 
 dotenv.config({ path: "./.env" });
 
-
-
 app.use((req, res, next) => {
   // console.log(req.path, req.method);
-  console.log(process.env.MONG_URL)
+  console.log(process.env.MONG_URL);
   next();
 });
 
+console.log(process.env.MONG_URL);
 
 mongoose
   .connect(process.env.MONG_URL)
