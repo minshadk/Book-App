@@ -43,4 +43,4 @@ exports.createUser = async (req, res) => {
         message: "Invalid data send"
       });
     }
-  };
+  }

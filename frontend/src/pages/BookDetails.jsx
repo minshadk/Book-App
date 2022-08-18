@@ -46,10 +46,7 @@ const BookDetails = () => {
           <div className="mt-8 space-y-6">
             <div className="w-full aspect-w-1 aspect-h-1 bg-gray-200 rounded-lg overflow-hidden xl:aspect-w-7 xl:aspect-h-8">
               <img
-                src={
-                  // "https://cdn.pixabay.com/photo/2018/04/26/16/39/beach-3352363_960_720.jpg"
-                  "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQh-fPxS_rcVWsAeXtpnKFnb9gjaw6lZqao55kHrV4&s"
-                }
+                src={ book && book.coverUrl}
                 // alt={product.imageAlt}
                 className="w-full h-full object-center object-cover group-hover:opacity-75"
               />
@@ -73,7 +70,7 @@ const BookDetails = () => {
             </div>
             <div class="flex justify-between border-b-2">
               <div>
-                <span>Language : </span> <span>{book && book.author}</span>
+                <span>Language : </span> <span>{book && book.language}</span>
               </div>
               <div>
                 <span>ISBN : </span> <span>{book && book.isbn}</span>
