@@ -1,13 +1,46 @@
+import { useState, useEffect } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import bookServices from "../services/bookServices";
+
 import TextArea from "./../components/Inputs/TextArea";
 
 const BookDetails = () => {
+  const { bookId } = useParams();
+  // console.log(bookId);
+
+  const [book, setBook] = useState();
+
+  useEffect(() => {
+    // const fetchBookDetails = async () => {
+    //   const response = await bookServices.getBookById(bookId);
+    //   console.log(response);
+    //   setBook(response.data.book);
+    //   console.log(book);
+    // };
+
+    // fetchBookDetails();
+    const getBook = async () => {
+      try {
+        // const books = await bookServices.getAllBooks();
+        // console.log(books);
+        const response = await fetch(`/book/${bookId}`);
+        const book = await response.json();
+        setBook(book.data.book);
+
+        // setBooks(books.data.books);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    getBook();
+  }, []);
   return (
     <>
       <div className="min-h-full flex items-center justify-center  py-12 px-4 sm:px-6 lg:px-8">
         <div className="max-w-md w-full space-y-8">
           <div>
             <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
-              bookeititle
+              {book && book.title}
             </h2>
           </div>
           <div className="mt-8 space-y-6">
@@ -24,26 +57,26 @@ const BookDetails = () => {
 
             <div class="flex justify-between border-b-2">
               <div>
-                <span>Book Name : </span> <span>{"harry potter"}</span>
+                <span>Book Name : </span> <span>{book && book.title}</span>
               </div>
               <div>
-                <span>Rating : </span> <span>{" 5/10"}</span>
-              </div>
-            </div>
-            <div class="flex justify-between border-b-2">
-              <div>
-                <span>Author : </span> <span>{"J. K. Rowling"}</span>
-              </div>
-              <div>
-                <span>Genres : </span> <span>{" Fiction"}</span>
+                <span>Rating : </span> <span>{book && book.rating}</span>
               </div>
             </div>
             <div class="flex justify-between border-b-2">
               <div>
-                <span>Language : </span> <span>{"English"}</span>
+                <span>Author : </span> <span>{book && book.author}</span>
               </div>
               <div>
-                <span>ISBN : </span> <span>{" 9781408845677"}</span>
+                <span>Genres : </span> <span>{book && book.genre}</span>
+              </div>
+            </div>
+            <div class="flex justify-between border-b-2">
+              <div>
+                <span>Language : </span> <span>{book && book.author}</span>
+              </div>
+              <div>
+                <span>ISBN : </span> <span>{book && book.isbn}</span>
               </div>
             </div>
             <button
@@ -58,31 +91,7 @@ const BookDetails = () => {
       </div>
       <div className="max-w-4xl w-full space-y-8 mx-auto">
         <h1 class="text-2xl">Review</h1>
-        <p>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Soluta magni
-          distinctio laboriosam ducimus pariatur aspernatur accusantium atque,
-          adipisci aperiam eveniet ab animi inventore quo quos rem beatae
-          voluptas excepturi ea necessitatibus quae velit blanditiis eligendi
-          ex! Expedita optio vel incidunt, corrupti dolorem temporibus
-          quibusdam, nesciunt vitae minima velit natus, repellat ab. Inventore
-          error officiis aut corporis doloribus quibusdam fuga, blanditiis eos
-          itaque ea quaerat nam minus illum perspiciatis quis voluptate quae
-          maxime reiciendis est cupiditate harum voluptates modi quasi! Itaque
-          earum debitis dolorum hic, accusamus nesciunt laborum, ipsam a eveniet
-          provident eum! Ipsa nisi ipsam dolorem libero reiciendis nemo fugiat
-          asperiores veniam, aperiam dolorum, repellendus illo aliquid ut
-          inventore nesciunt saepe assumenda consectetur alias? Modi excepturi
-          adipisci, eos eaque cupiditate impedit doloremque dicta ad officia
-          voluptatem laboriosam facere totam assumenda, dolores dolorum! Tempore
-          repudiandae modi facilis vero! Corporis quam voluptatem provident
-          velit laudantium non accusantium dicta atque exercitationem, molestias
-          quasi delectus ea? Ut nostrum sunt dolorem consequatur qui? Facilis
-          fuga repellendus natus porro eligendi ducimus eius quisquam tenetur
-          odio voluptatum, possimus deleniti dolore neque quaerat totam fugiat.
-          Velit a iure nobis eius excepturi nemo deleniti rem laboriosam
-          similique quidem magni molestias molestiae impedit vitae, ad quis unde
-          commodi. Unde, eaque.
-        </p>
+        <p>{book && book.description}</p>
         <h1 class="text-2xl">Comments</h1>
 
         {/* <label
