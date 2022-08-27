@@ -1,6 +1,7 @@
 const express = require("express");
 
 const userController = require("../controllers/user")
+const protect = require("../middleware/authMiddleware")
 
 const router = express.Router();
 
@@ -9,7 +10,7 @@ router
   .post(userController.createUser)
 //   .get(userController.getAllUsers);
 
-router.route("/login").post(userController.logIn);
+router.route("/login").post(protect.protect,userController.logIn);
 
 // router
 //   .route("/:id")

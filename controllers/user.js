@@ -12,7 +12,7 @@ exports.createUser = async (req, res) => {
       status: "success",
       data: {
         user: newUser,
-      },
+      }, 
     });
   } catch (err) {
     res.status(400).json({
@@ -27,7 +27,7 @@ exports.logIn = async (req, res) => {
   const { userName, password } = req.body;
   try {
     const user = await User.findOne({
-      userName: userName,
+      userName: userName, 
       password: password,
     });
 

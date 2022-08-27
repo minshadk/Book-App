@@ -1,9 +1,9 @@
 const express = require("express");
 
-const userRoutes = require("./routes/user")
-const bookRoutes = require("./routes/books")
-const commentRoutes = require("./routes/comment")
-
+const userRoutes = require("./routes/user");
+const bookRoutes = require("./routes/books");
+const commentRoutes = require("./routes/comment");
+const  protect  = require("./middleware/authMiddleware");
 const app = express();
 
 // MIDDLEWARE

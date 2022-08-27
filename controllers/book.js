@@ -22,7 +22,6 @@ exports.createBook = async (req, res) => {
 };
 
 exports.getAllBooks= async (req, res) => {
-  console.log("get all services called");
   try {
     const books = await Book.find();
     console.log(books);
@@ -55,7 +54,7 @@ exports.getBook = async (req, res) => {
     });
 
   } catch (err) {
-    res.status(404).json({
+    res.status(404).json({ 
       status: "fail",
       message: err,
     });
