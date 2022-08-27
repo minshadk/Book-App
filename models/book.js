@@ -21,7 +21,7 @@ const bookSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  imageUrl: {
+  coverUrl: {
     type: String,
     required: true,
   },
@@ -39,7 +39,10 @@ const bookSchema = new mongoose.Schema({
   },
   rating: {
     type: Number,
-    // require: true,
+  },
+  userId: {
+    type: mongoose.Schema.Types.ObjectId,
+    required: true
   },
 });
 

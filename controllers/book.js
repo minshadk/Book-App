@@ -2,8 +2,8 @@ const Book = require("../models/book");
 
 exports.createBook = async (req, res) => {
   try {
-    console.log(req.body);
-
+    // console.log(req.body.user)
+    req.body.userId = req.user._id;
     const book = await Book.create(req.body);
 
     res.status(201).json({
@@ -12,7 +12,6 @@ exports.createBook = async (req, res) => {
         book: book,
       },
     });
-    
   } catch (err) {
     res.status(400).json({
       status: "failed",
@@ -21,10 +20,9 @@ exports.createBook = async (req, res) => {
   }
 };
 
-exports.getAllBooks= async (req, res) => {
+exports.getAllBooks = async (req, res) => {
   try {
     const books = await Book.find();
-    console.log(books);
 
     res.status(200).json({
       status: "success",
@@ -33,7 +31,6 @@ exports.getAllBooks= async (req, res) => {
         books,
       },
     });
-
   } catch (err) {
     res.status(404).json({
       status: "fail",
@@ -43,6 +40,8 @@ exports.getAllBooks= async (req, res) => {
 };
 
 exports.getBook = async (req, res) => {
+  // console.log(req.body.user)
+  // console.log(req.user)
   try {
     const book = await Book.findById(req.params.id);
 
@@ -52,9 +51,8 @@ exports.getBook = async (req, res) => {
         book,
       },
     });
-
   } catch (err) {
-    res.status(404).json({ 
+    res.status(404).json({
       status: "fail",
       message: err,
     });
@@ -74,7 +72,6 @@ exports.updateBook = async (req, res) => {
         book,
       },
     });
-
   } catch (err) {
     res.status(404).json({
       status: "fail",
@@ -92,7 +89,6 @@ exports.deleteBook = async (req, res) => {
       message: "book deleted successfully",
       data: null,
     });
-
   } catch (err) {
     res.status(404).json({
       status: "fail",

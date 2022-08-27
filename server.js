@@ -2,16 +2,16 @@ const mongoose = require("mongoose");
 const dotenv = require("dotenv");
 const app = require("./app");
 
+const  errorHandler = require("./middleware/errorMiddleware");
+
 dotenv.config({ path: "./.env" });
 
 app.use((req, res, next) => {
   // console.log(req.path, req.method);
-  console.log(process.env.MONG_URL);
   next();
 });
 
-console.log(process.env.MONG_URL);
-
+app.use(errorHandler.errorHandler);
 mongoose
   .connect(process.env.MONG_URL)
   .then(() => {
@@ -22,3 +22,4 @@ mongoose
   .catch((error) => {
     console.log(error);
   });
+ 

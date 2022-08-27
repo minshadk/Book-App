@@ -1,13 +1,13 @@
 const express = require("express");
 
-const book = require("../controllers/book")
+const book = require("../controllers/book");
+const protect = require("../middleware/authMiddleware");
+
+// router.route("/login").post(protect.protect,userController.logIn);
 
 const router = express.Router();
 
-router
-  .route("/")
-  .post(book.createBook)
-  .get(book.getAllBooks);
+router.route("/").post(protect.protect, book.createBook).get(book.getAllBooks);
 
 router
   .route("/:id")
@@ -18,4 +18,4 @@ router
 // router.route("/findDonare/:id").get(book.getDonorByCondition);
 
 module.exports = router;
-
+ 
