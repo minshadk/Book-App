@@ -12,7 +12,7 @@ const AddBook = () => {
   const [author, setAuthor] = useState(null);
   const [isbn, setIsbn] = useState(null);
   const [purchaseLink, setPurchaseLink] = useState(null);
-  const [imageUrl, setImageUrl] = useState(null);
+  const [coverUrl, setImageUrl] = useState(null);
   const [description, setDescription] = useState(null);
   const [genre, setGenre] = useState(null);
   const [language, setLanguage] = useState(null);
@@ -22,29 +22,39 @@ const AddBook = () => {
   const options = ["test", "twst2", "sdfsdf"];
 
   const handleFormSubmit = async () => {
-    console.log("it called a monster");
     const bookDetails = {
       title,
       author,
       isbn,
       purchaseLink,
-      imageUrl,
+      coverUrl,
       description,
       genre,
       language,
       year,
       // rating,
     };
-    console.log(bookDetails);
     const response = await fetch("/book", {
       method: "POST",
-      body: JSON.stringify(bookDetails),
+      body: JSON.stringify({
+        title,
+        author,
+        isbn,
+        purchaseLink,
+        coverUrl,
+        description,
+        genre,
+        language,
+        year,
+        // rating,
+      }),
       headers: {
         "Content-Type": "application/json",
+        Authorization: "Bearer " + localStorage.getItem("token"),
       },
     });
     const json = await response.json();
-    if (response.ok) navigate(-1)
+    if (response.ok) navigate(-1);
   };
   return (
     <div className="min-h-full flex items-center justify-center  py-12 px-4 sm:px-6 lg:px-8">
@@ -79,7 +89,7 @@ const AddBook = () => {
             <TextInput
               placeHolder={"Image Url"}
               type={"text"}
-              textValue={imageUrl}
+              textValue={coverUrl}
               setText={setImageUrl}
             />
             <TextInput

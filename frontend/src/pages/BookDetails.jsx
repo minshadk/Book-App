@@ -6,28 +6,30 @@ import TextArea from "./../components/Inputs/TextArea";
 
 const BookDetails = () => {
   const { bookId } = useParams();
-  // console.log(bookId);
-
   const [book, setBook] = useState();
+  const [comment, setComment] = useState();
 
+  const handleFormSubmit = async () => {
+    const response = await fetch("/comment", {
+      method: "POST",
+      body: JSON.stringify({
+        comment,
+        bookId,
+      }),
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + localStorage.getItem("token"),
+      },
+    });
+    const json = await response.json();
+    console.log(json);
+  };
   useEffect(() => {
-    // const fetchBookDetails = async () => {
-    //   const response = await bookServices.getBookById(bookId);
-    //   console.log(response);
-    //   setBook(response.data.book);
-    //   console.log(book);
-    // };
-
-    // fetchBookDetails();
     const getBook = async () => {
       try {
-        // const books = await bookServices.getAllBooks();
-        // console.log(books);
         const response = await fetch(`/book/${bookId}`);
         const book = await response.json();
         setBook(book.data.book);
-
-        // setBooks(books.data.books);
       } catch (err) {
         console.log(err);
       }
@@ -46,7 +48,7 @@ const BookDetails = () => {
           <div className="mt-8 space-y-6">
             <div className="w-full aspect-w-1 aspect-h-1 bg-gray-200 rounded-lg overflow-hidden xl:aspect-w-7 xl:aspect-h-8">
               <img
-                src={ book && book.coverUrl}
+                src={book && book.coverUrl}
                 // alt={product.imageAlt}
                 className="w-full h-full object-center object-cover group-hover:opacity-75"
               />
@@ -90,20 +92,20 @@ const BookDetails = () => {
         <h1 class="text-2xl">Review</h1>
         <p>{book && book.description}</p>
         <h1 class="text-2xl">Comments</h1>
-
-        {/* <label
-          for="message"
-          class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-400"
+        <TextArea
+          label="Comment"
+          placeHolder={"Add Your Comment"}
+          textValue={comment}
+          setText={setComment}
+        />
+        <button
+          type="submit"
+          className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+          onClick={handleFormSubmit}
         >
-          Add Your Comment
-        </label>
-        <textarea
-          id="message"
-          rows="4"
-          class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-          placeholder="Your message..."
-        ></textarea> */}
-        <TextArea label="Comment" placeHolder={"Add Your Comment"} />
+          <span className="absolute left-0 inset-y-0 flex items-center pl-3"></span>
+          Add Comments
+        </button>
         <div>
           <h1 class="text-1xl">user name</h1>
           <p>
@@ -119,15 +121,6 @@ const BookDetails = () => {
             <span>like </span>
             <span>dislike</span>
           </div>
-        </div>
-        <div>
-          <button
-            type="submit"
-            className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-          >
-            <span className="absolute left-0 inset-y-0 flex items-center pl-3"></span>
-            Login in
-          </button>
         </div>
       </div>
     </>

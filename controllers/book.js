@@ -2,7 +2,8 @@ const Book = require("../models/book");
 
 exports.createBook = async (req, res) => {
   try {
-    // console.log(req.body.user)
+    console.log(req.body.user)
+    console.log(req.user._id)
     req.body.userId = req.user._id;
     const book = await Book.create(req.body);
 
@@ -13,6 +14,7 @@ exports.createBook = async (req, res) => {
       },
     });
   } catch (err) {
+    console.log(err)
     res.status(400).json({
       status: "failed",
       message: "Invalid data send",

@@ -93,6 +93,29 @@ exports.updateComment = async (req, res) => {
   }
 };
 
+exports.likeComment = async (req, res) => {
+  try {
+    const comment = await Comment.findById(req.params.id);
+    if (!comment) {
+      res.status(400);
+      throw new Error("Please Enter a Valid comment");
+    }
+
+    if (!comment.likes.includes(req.user._id)) {
+      await comment.updateOne({ $push: { likes: req.user._id } });
+      res.status(200).json("the comment as been liked");
+    } else {
+      await comment.updateOne({ $pull: { likes: req.user._id } });
+      res.status(200).json("the comment as been disliked");
+    }
+  } catch {
+    res.status(404).json({
+      status: "fail",
+      message: err,
+    });
+  }
+};
+
 exports.deleteComment = async (req, res) => {
   try {
     const comment = await Comment.findById(req.params.id);
@@ -100,8 +123,8 @@ exports.deleteComment = async (req, res) => {
       res.status(400);
       throw new Error("Please Enter a Valid comment");
     }
-    console.log(comment.userId)
-    console.log(`req.user._id = ${req.user._id}`)
+    console.log(comment.userId);
+    console.log(`req.user._id = ${req.user._id}`);
     if (comment.userId.toString() !== req.user._id.toString()) {
       // if (comment.userId !== req.user._id) {
       res.status(400);
@@ -116,7 +139,7 @@ exports.deleteComment = async (req, res) => {
       data: null,
     });
   } catch (err) {
-    console.log(err)
+    console.log(err);
     res.status(404).json({
       status: "fail",
       message: err,

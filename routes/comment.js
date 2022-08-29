@@ -16,6 +16,6 @@ router
   .patch(protect.protect, comment.updateComment)
   .delete(protect.protect, comment.deleteComment);
 
-// router.route("/findDonare/:id").get(book.getDonorByCondition);
+router.route("/like/:id").put(protect.protect, comment.likeComment);
 
 module.exports = router;
