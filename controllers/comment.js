@@ -116,6 +116,29 @@ exports.likeComment = async (req, res) => {
   }
 };
 
+exports.getCommentByBookId = async (req, res) => {
+  try {
+    console.log(req.params.id);
+    const comments = await Comment.find({ bookId: req.params.id });
+    if (!comments) {
+      res.status(400);
+      throw new Error("Please Enter a Valid comments");
+    }
+
+    res.status(200).json({
+      status: "success",
+      data: {
+        comments,
+      },
+    });
+  } catch {
+    res.status(404).json({
+      status: "fail",
+      message: err,
+    });
+  }
+};
+
 exports.deleteComment = async (req, res) => {
   try {
     const comment = await Comment.findById(req.params.id);
@@ -123,10 +146,7 @@ exports.deleteComment = async (req, res) => {
       res.status(400);
       throw new Error("Please Enter a Valid comment");
     }
-    console.log(comment.userId);
-    console.log(`req.user._id = ${req.user._id}`);
     if (comment.userId.toString() !== req.user._id.toString()) {
-      // if (comment.userId !== req.user._id) {
       res.status(400);
       throw new Error("Please add a text field");
     }

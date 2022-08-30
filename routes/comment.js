@@ -18,4 +18,6 @@ router
 
 router.route("/like/:id").put(protect.protect, comment.likeComment);
 
+router.route("/getByBook/:id").get(comment.getCommentByBookId);
+
 module.exports = router;
