@@ -2,14 +2,14 @@ const mongoose = require("mongoose");
 const dotenv = require("dotenv");
 const app = require("./app");
 
-const  errorHandler = require("./middleware/errorMiddleware");
+const errorHandler = require("./middleware/errorMiddleware");
 
 dotenv.config({ path: "./.env" });
 
-app.use((req, res, next) => {
-  // console.log(req.path, req.method);
-  next();
-});
+// app.use((req, res, next) => {
+// console.log(req.path, req.method);
+//   next();
+// });
 
 app.use(errorHandler.errorHandler);
 mongoose
@@ -22,4 +22,3 @@ mongoose
   .catch((error) => {
     console.log(error);
   });
- 

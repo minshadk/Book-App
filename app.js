@@ -12,10 +12,11 @@ const app = express();
 // Passing data through body
 app.use(cors());
 app.use(express.json());
+
 // ROUTES
 app.use("/user", userRoutes);
 app.use("/book", bookRoutes);
 app.use("/comment", commentRoutes);
-app.use(errorHandler.errorHandler)
+app.use(errorHandler.errorHandler);
 
 module.exports = app;
