@@ -10,7 +10,6 @@ const Login = () => {
   const handleFormSubmit = async () => {
     const userDetails = {
       userName,
-      // email,
       password,
     };
     console.log(userDetails);
@@ -44,12 +43,6 @@ const Login = () => {
                 textValue={userName}
                 setText={setUserName}
               />
-              {/* <TextInput
-                placeHolder={"Email"}
-                type={"string"}
-                textValue={email}
-                setText={setEmail}
-              /> */}
               <TextInput
                 placeHolder={"Password"}
                 type={"password"}

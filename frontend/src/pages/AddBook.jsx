@@ -46,7 +46,6 @@ const AddBook = () => {
         genre,
         language,
         year,
-        // rating,
       }),
       headers: {
         "Content-Type": "application/json",
