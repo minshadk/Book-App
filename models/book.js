@@ -42,9 +42,9 @@ const bookSchema = new mongoose.Schema({
   },
   userId: {
     type: mongoose.Schema.Types.ObjectId,
-    required: true
+    required: true,
   },
 });
 
 const BookSchema = mongoose.model("BookSchema", bookSchema);
-module.exports = BookSchema ;
+module.exports = BookSchema;
