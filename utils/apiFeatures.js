@@ -10,7 +10,10 @@ class ApiFeatures {
     excluededFields.forEach((el) => delete queryObj[el]);
 
     let queryStr = JSON.stringify(queryObj);
+    console.log("query String ++ " + queryStr);
+
     queryStr = queryStr.replace(/\b(gte|gt|lte|lt)\b/g, (match) => `$${match}`);
+    console.log("query String ++ " + queryStr);
 
     this.query.find(JSON.parse(queryStr));
 
@@ -52,11 +55,23 @@ class ApiFeatures {
     this.query = this.query.skip(skip).limit(limit);
 
     // if (this.queryString.page) {
-    // const totalCount = this.query.countDocuments();
+    //    const  totalCount =  this.query.countDocuments();
     //   if (skip >= totalCount) console.log("this page is not exist");
+    //   console.log(totalCount);
     // }
 
-    // console.log(totalCount);
+    // if (this.queryString.page) {
+    //   this.query
+    //     .countDocuments()
+    //     .then((totalCount) => {
+    //       if (skip >= totalCount) {
+    //         console.log("this page does not exist");
+    //       }
+    //     })
+    //     .catch((error) => {
+    //       console.error("Error counting documents:", error);
+    //     });
+    // }
 
     return this;
   }

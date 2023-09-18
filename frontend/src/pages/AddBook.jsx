@@ -19,9 +19,31 @@ const AddBook = () => {
   const [year, setYear] = useState(null);
   const [rating, setRating] = useState(null);
 
-  const options = ["test", "twst2", "sdfsdf"];
+  const genreOptions = [
+    "Fiction",
+    "Novel",
+    "Narrative",
+    "Science fiction",
+    "Mystery",
+    "Genre fiction",
+    "Historical Fiction",
+    "Non-fiction",
+    "Fantasy Fiction",
+    "Fairy Tale",
+  ];
+
+  const languageOptions = [
+    "English",
+    "Hindi",
+    "Malayalam",
+    "Arabic",
+    "Spanish",
+    "Tamil",
+    "French",
+  ];
 
   const handleFormSubmit = async () => {
+    console.log("handle submit is clicked");
     const bookDetails = {
       title,
       author,
@@ -36,23 +58,14 @@ const AddBook = () => {
     };
     const response = await fetch("/book", {
       method: "POST",
-      body: JSON.stringify({
-        title,
-        author,
-        isbn,
-        purchaseLink,
-        coverUrl,
-        description,
-        genre,
-        language,
-        year,
-      }),
+      body: JSON.stringify(bookDetails),
       headers: {
         "Content-Type": "application/json",
         Authorization: "Bearer " + localStorage.getItem("token"),
       },
     });
     const json = await response.json();
+    console.log(json);
     if (response.ok) navigate(-1);
   };
   return (
@@ -103,11 +116,15 @@ const AddBook = () => {
               textValue={year}
               setText={setYear}
             />
-            <DropDown label={"Genre"} setOption={setGenre} options={options} />
+            <DropDown
+              label={"Genre"}
+              setOption={setGenre}
+              options={genreOptions}
+            />
             <DropDown
               label={"language"}
               setOption={setLanguage}
-              options={options}
+              options={languageOptions}
             />
             <YearPicker />
             <TextArea
@@ -124,7 +141,7 @@ const AddBook = () => {
               onClick={handleFormSubmit}
             >
               <span className="absolute left-0 inset-y-0 flex items-center pl-3"></span>
-              Login in
+              Add book
             </button>
           </div>
         </div>

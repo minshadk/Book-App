@@ -12,9 +12,6 @@ const TextInput = ({ type, placeHolder, textValue, setText }) => {
         required
         className="appearance-none rounded-none relative block w-full px-3 py-2 my-5 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
         placeholder={placeHolder}
-        // onChange={(e) => {
-        //   handleTextInput(e);
-        // }}
         onChange={(e) => handleTextInput(e.target.value)}
       />
     </div>

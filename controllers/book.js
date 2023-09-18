@@ -4,6 +4,7 @@ const ApiFeatures = require("../utils/apiFeatures");
 
 exports.createBook = async (req, res) => {
   try {
+    console.log(req.body);
     req.body.userId = req.user._id;
     const book = await Book.create(req.body);
 
@@ -14,6 +15,7 @@ exports.createBook = async (req, res) => {
       },
     });
   } catch (err) {
+    console.log(err);
     res.status(400).json({
       status: "failed",
       message: "Invalid data send",
@@ -102,44 +104,39 @@ exports.deleteBook = async (req, res) => {
   }
 };
 
-// Filtering  query
+exports.bookRating = async (req, res) => {
+  try {
+    console.log("book rating is called");
+    const { bookId } = req.params;
+    const userId = req.user._id;
+    const { rating } = req.body;
 
-// 1 Filtering query  removeing extra fields
-// const queryObj = { ...req.query };
-// const excludedFields = ["page", "sort", "limit", "fields"];
-// excludedFields.forEach((el) => delete queryObj[el]);
+    const book = await Book.findById(bookId);
 
-// // 2 Adding $ sings in comparistions
-// let queryStr = JSON.stringify(queryObj);
-// queryStr = queryStr.replace(/\b(gte|gt|lte|lt)\b/g, (match) => `$${match}`);
+    if (!book) {
+      res.status(404).json({ message: "Book not found" });
+      return;
+    }
 
-// // JSON.parse(queryStr) ___ -----
+    // Check if the user has already rated this book
+    const existingRatingIndex = book.rating.findIndex(
+      (r) => r.userId === userId
+    );
 
-// let query = Book.find();
+    if (existingRatingIndex !== -1) {
+      // Update the existing rating
+      book.rating[existingRatingIndex].rating = rating;
+    } else {
+      // Create a new rating and push it to the array
+      book.rating.push({ userId, rating });
+    }
 
-// // 2) Sorting
-// if (req.query.sort) {
-//   const sortBy = req.query.sort.split(",").join(" ");
-//   query = query.sort(sortBy);
-// } else query = query.sort("title");
+    // Save the updated book document
+    await book.save();
 
-// // 3) Field limiting
-// if (req.query.fields) {
-//   const fields = req.query.fields.split(",").join(" ");
-//   query = query.select(fields);
-// } else query = query.select("-__v");
-
-// // 4) Pagination
-// const page = req.query.page * 1 || 1;
-// const limit = req.query.limit * 1 || 100;
-// const skip = (page - 1) * limit;
-
-// query = query.skip(skip).limit(limit);
-
-// if (req.query.page) {
-//   const totalCount = await Book.countDocuments();
-//   if (skip >= totalCount) console.log("this page is not exist");
-// }
-
-// const books = await query;
-// // query.sort().select().skip().limit()
+    res.json({ message: "Rating submitted successfully" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "An error occurred" });
+  }
+};

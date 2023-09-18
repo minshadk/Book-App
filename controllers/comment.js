@@ -94,12 +94,17 @@ exports.updateComment = async (req, res) => {
 };
 
 exports.likeComment = async (req, res) => {
+  const commentId = req.params.id;
+  console.log(req.user._id);
+ 
   try {
-    const comment = await Comment.findById(req.params.id);
+    const comment = await Comment.findById(commentId);
     if (!comment) {
       res.status(400);
       throw new Error("Please Enter a Valid comment");
     }
+    console.log(comment)
+    
 
     if (!comment.likes.includes(req.user._id)) {
       await comment.updateOne({ $push: { likes: req.user._id } });
@@ -108,21 +113,54 @@ exports.likeComment = async (req, res) => {
       await comment.updateOne({ $pull: { likes: req.user._id } });
       res.status(200).json("the comment as been disliked");
     }
-  } catch {
-    res.status(404).json({
+  } catch (err) {
+      res.status(400).json({
       status: "fail",
       message: err,
     });
   }
 };
 
+// exports.getCommentByBookId = async (req, res) => {
+//   try {
+//     console.log(req.params.id);
+//     const comments = await Comment.find({ bookId: req.params.id });
+//     if (!comments) {
+//       res.status(400);
+//       throw new Error("Please Enter a Valid comments");
+//     }
+
+//     if (comments.length === 0) {
+//       return res.status(404).json({
+//         status: "fail",
+//         message: "No comments found for the provided book ID.",
+//       });
+//     }
+
+//     res.status(200).json({
+//       status: "success",
+//       data: {
+//         comments,
+//       },
+//     });
+//   } catch (err) {
+//     res.status(404).json({
+//       status: "fail",
+//       message: err,
+//     });
+//   }
+// };
+
 exports.getCommentByBookId = async (req, res) => {
+  console.log(req.params.id);
   try {
-    console.log(req.params.id);
     const comments = await Comment.find({ bookId: req.params.id });
-    if (!comments) {
-      res.status(400);
-      throw new Error("Please Enter a Valid comments");
+
+    if (comments.length === 0) {
+      return res.status(404).json({
+        status: "fail",
+        message: "No comments found for the provided book ID.",
+      });
     }
 
     res.status(200).json({
@@ -131,14 +169,15 @@ exports.getCommentByBookId = async (req, res) => {
         comments,
       },
     });
-  } catch {
-    res.status(404).json({
-      status: "fail",
-      message: err,
+  } catch (err) {
+    console.error(err); // Log the error for debugging purposes
+
+    res.status(500).json({
+      status: "error",
+      message: "An internal server error occurred.",
     });
   }
 };
-
 exports.deleteComment = async (req, res) => {
   try {
     const comment = await Comment.findById(req.params.id);

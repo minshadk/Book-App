@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import bookServices from "../services/bookServices";
+import commentServices from "../services/commentServices";
 
 import TextArea from "./../components/Inputs/TextArea";
 
@@ -8,6 +9,7 @@ const BookDetails = () => {
   const { bookId } = useParams();
   const [book, setBook] = useState();
   const [comment, setComment] = useState();
+  const [comments, setComments] = useState();
 
   const handleFormSubmit = async () => {
     const response = await fetch("/comment", {
@@ -24,6 +26,48 @@ const BookDetails = () => {
     const json = await response.json();
     console.log(json);
   };
+
+  const handleLike = async (commentId) => {
+    const response = await fetch(`/comment/like/${commentId}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + localStorage.getItem("token"),
+      },
+    });
+    const json = await response.json();
+    console.log(json);
+  };
+
+  const handleRating = async (rating) => {
+    try {
+      const response = await fetch(
+        `http://localhost:5000/book/rate/${bookId}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + localStorage.getItem("token"),
+          },
+          body: JSON.stringify({ rating }), // Corrected placement of the body key
+        }
+      );
+
+      if (response.ok) {
+        const json = await response.json();
+        console.log(json);
+      } else {
+        console.error(
+          "Error updating rating:",
+          response.status,
+          response.statusText
+        );
+      }
+    } catch (error) {
+      console.error("Error updating rating:", error);
+    }
+  };
+
   useEffect(() => {
     const getBook = async () => {
       try {
@@ -33,9 +77,52 @@ const BookDetails = () => {
       } catch (err) {
         console.log(err);
       }
+      console.log(book.rating[0].rating);
     };
+    // const getComments = async () => {
+    //   try {
+    //     const response = await commentServices.getBookById(bookId);
+    //     const comments = await response.json();
+    //     await console.log(comments.data);
+    //   } catch (err) {
+    //     console.log(err);
+    //   }
+    // };
+    // getComments();
+    async function getComments() {
+      try {
+        const response = await fetch(
+          `http://localhost:5000/comment/getByBook/${bookId}`
+        );
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        console.log(data.data);
+
+        setComments(data);
+
+        console.log(data.status);
+
+        if (data.status === "success" && data.data && data.data.comments) {
+          const comments = data.data.comments;
+          setComments(comments); // Array of comments
+        }
+      } catch (error) {
+        console.error("Fetch error:", error);
+      }
+    }
+
+    getComments();
     getBook();
   }, []);
+
+  const isCommentLiked = (commentId, likedComments) => {
+    return likedComments.includes("62f51e731da9db5526b8509d");
+  };
+
   return (
     <>
       <div className="min-h-full flex items-center justify-center  py-12 px-4 sm:px-6 lg:px-8">
@@ -54,15 +141,20 @@ const BookDetails = () => {
               />
             </div>
 
-            <div class="flex justify-between border-b-2">
+            <div className="flex justify-between border-b-2">
               <div>
                 <span>Book Name : </span> <span>{book && book.title}</span>
               </div>
               <div>
-                <span>Rating : </span> <span>{book && book.rating}</span>
+                <button onClick={(e) => handleRating(4)}>
+                  <span>
+                  </span>
+                  {book && book.rating.rating}
+                  {/* <span>{book && book.rating}</span> */}
+                </button>
               </div>
             </div>
-            <div class="flex justify-between border-b-2">
+            <div className="flex justify-between border-b-2">
               <div>
                 <span>Author : </span> <span>{book && book.author}</span>
               </div>
@@ -70,7 +162,7 @@ const BookDetails = () => {
                 <span>Genres : </span> <span>{book && book.genre}</span>
               </div>
             </div>
-            <div class="flex justify-between border-b-2">
+            <div className="flex justify-between border-b-2">
               <div>
                 <span>Language : </span> <span>{book && book.language}</span>
               </div>
@@ -89,9 +181,9 @@ const BookDetails = () => {
         </div>
       </div>
       <div className="max-w-4xl w-full space-y-8 mx-auto">
-        <h1 class="text-2xl">Review</h1>
+        <h1 className="text-2xl">Review</h1>
         <p>{book && book.description}</p>
-        <h1 class="text-2xl">Comments</h1>
+        <h1 className="text-2xl">Comments</h1>
         <TextArea
           label="Comment"
           placeHolder={"Add Your Comment"}
@@ -106,22 +198,33 @@ const BookDetails = () => {
           <span className="absolute left-0 inset-y-0 flex items-center pl-3"></span>
           Add Comments
         </button>
-        <div>
-          <h1 class="text-1xl">user name</h1>
-          <p>
-            velit laudantium non accusantium dicta atque exercitationem,
-            molestias quasi delectus ea? Ut nostrum sunt dolorem consequatur
-            qui? Facilis fuga repellendus natus porro eligendi ducimus eius
-            quisquam tenetur odio voluptatum, possimus deleniti dolore neque
-            quaerat totam fugiat. Velit a iure nobis eius excepturi nemo
-            deleniti rem laboriosam similique quidem magni molestias molestiae
-            impedit vitae, ad quis unde
-          </p>
-          <div>
-            <span>like </span>
-            <span>dislike</span>
-          </div>
-        </div>
+
+        {comments &&
+          comments.map((comment) => (
+            <div>
+              <h1 className="text-1xl">{comment.userId}</h1>
+              <p>{comment.comment}</p>
+              <div>
+                <span>likes {comment.likes.length}</span>
+                {/* <button onClick={(e) => handleLike(comment._id)}>
+                  <span className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">
+                    like
+                  </span>
+                </button> */}
+                {isCommentLiked(comment._id, comment.likes) ? (
+                  <button onClick={() => handleLike(comment._id)}>
+                    Dislike
+                  </button>
+                ) : (
+                  <button onClick={() => handleLike(comment._id)}>Like</button>
+                )}
+
+                {/* <span>
+                  <span onClick={handleLike}> dislike </span>
+                </span> */}
+              </div>
+            </div>
+          ))}
       </div>
     </>
   );

@@ -15,6 +15,7 @@ exports.createUser = async (req, res) => {
       }, 
     });
   } catch (err) {
+    console.log(err)
     res.status(400).json({
       status: "failed",
       message: "Invalid data send",

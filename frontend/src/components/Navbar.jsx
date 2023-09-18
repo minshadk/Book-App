@@ -1,55 +1,79 @@
+import { NavLink } from "react-router-dom";
+import { useAuthContext } from "../hooks/useAuthContext";
+
 const Navbar = () => {
+  const { user } = useAuthContext();
+  const { dispatch } = useAuthContext();
+
+  const handleLogout = () => {
+    localStorage.removeItem("user");
+
+    dispatch({ type: "LOGOUT" });
+  };
+
   return (
-    <nav class="bg-white border-gray-200 px-2 " >
-      <div class="container mx-auto flex flex-wrap items-center justify-between">
-        <a href="#" class="flex">
-          <span class="self-center text-lg font-semibold whitespace-nowrap">
+    <nav className="bg-white border-gray-200 px-2 ">
+      <div className="container mx-auto flex flex-wrap items-center justify-between">
+        <NavLink to="/" className="flex">
+          <span className="self-center text-lg font-semibold whitespace-nowrap">
             BuchThings
           </span>
-        </a>
-        <div class="hidden md:block w-full md:w-auto" id="mobile-menu">
-          <ul class="flex-col md:flex-row flex md:space-x-8 mt-4 md:mt-0 md:text-sm md:font-medium">
+        </NavLink>
+        <div className="hidden md:block w-full md:w-auto" id="mobile-menu">
+          <ul className="flex-col md:flex-row flex md:space-x-8 mt-4 md:mt-0 md:text-sm md:font-medium">
             <li>
-              <a
-                href="#"
-                class="bg-blue-700 md:bg-transparent text-white block pl-3 pr-4 py-2 md:text-blue-700 md:p-0 rounded"
-                aria-current="page"
+              <NavLink
+                to="/"
+                className="text-gray-700 hover:bg-gray-50 border-b border-gray-100 md:hover:bg-transparent md:border-0 block pl-3 pr-4 py-2 md:hover:text-blue-700 md:p-0"
               >
                 Home
-              </a>
+              </NavLink>
             </li>
             <li>
-              <a
-                href="#"
-                class="text-gray-700 hover:bg-gray-50 border-b border-gray-100 md:hover:bg-transparent md:border-0 block pl-3 pr-4 py-2 md:hover:text-blue-700 md:p-0"
+              <NavLink
+                to="browseBook"
+                className="text-gray-700 hover:bg-gray-50 border-b border-gray-100 md:hover:bg-transparent md:border-0 block pl-3 pr-4 py-2 md:hover:text-blue-700 md:p-0"
               >
-                Browse  Books
-              </a>
+                Browse Books
+              </NavLink>
             </li>
             <li>
-              <a
-                href="#"
-                class="text-gray-700 hover:bg-gray-50 border-b border-gray-100 md:hover:bg-transparent md:border-0 block pl-3 pr-4 py-2 md:hover:text-blue-700 md:p-0"
+              <NavLink
+                to="addBook"
+                className="text-gray-700 hover:bg-gray-50 border-b border-gray-100 md:hover:bg-transparent md:border-0 block pl-3 pr-4 py-2 md:hover:text-blue-700 md:p-0"
               >
-                Login
-              </a>
+                Add Book
+              </NavLink>
             </li>
-            <li>
-              {/* <a
-                href="#"
-                class="text-gray-700 hover:bg-gray-50 border-b border-gray-100 md:hover:bg-transparent md:border-0 block pl-3 pr-4 py-2 md:hover:text-blue-700 md:p-0"
-              >
-                Pricing
-              </a>
-            </li>
-            <li>
-              <a
-                href="#"
-                class="text-gray-700 hover:bg-gray-50 border-b border-gray-100 md:hover:bg-transparent md:border-0 block pl-3 pr-4 py-2 md:hover:text-blue-700 md:p-0"
-              >
-                Contact
-              </a> */}
-            </li>
+            {!user ? (
+              <>
+                <li>
+                  <NavLink
+                    to="/login"
+                    className="text-gray-700 hover:bg-gray-50 border-b border-gray-100 md:hover:bg-transparent md:border-0 block pl-3 pr-4 py-2 md:hover:text-blue-700 md:p-0"
+                  >
+                    Login
+                  </NavLink>
+                </li>
+                <li>
+                  <NavLink
+                    to="/signUp"
+                    className="text-gray-700 hover:bg-gray-50 border-b border-gray-100 md:hover:bg-transparent md:border-0 block pl-3 pr-4 py-2 md:hover:text-blue-700 md:p-0"
+                  >
+                    Sign Up
+                  </NavLink>
+                </li>
+              </>
+            ) : (
+              <li>
+                <button
+                  className="text-red-700 hover:bg-green-50 border-b border-gray-100 md:hover:bg-red md:border-0 block pl-3 pr-4 py-2 md:hover:text-blue-700 md:p-0"
+                  onClick={handleLogout}
+                >
+                  Logout
+                </button>
+              </li>
+            )}
           </ul>
         </div>
       </div>

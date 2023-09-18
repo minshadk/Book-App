@@ -6,6 +6,7 @@ const protect = require("../middleware/authMiddleware");
 // router.route("/login").post(protect.protect,userController.logIn);
 
 const router = express.Router();
+router.route("/rate/:bookId").put(protect.protect, book.bookRating);
 
 router.route("/").post(protect.protect, book.createBook).get(book.getAllBooks);
 
@@ -15,7 +16,5 @@ router
   .patch(book.updateBook)
   .delete(book.deleteBook);
 
-// router.route("/findDonare/:id").get(book.getDonorByCondition);
-
-module.exports = router;
  
+module.exports = router;

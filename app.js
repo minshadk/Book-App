@@ -7,7 +7,7 @@ const commentRoutes = require("./routes/comment");
 
 const errorHandler = require("./middleware/errorMiddleware");
 const app = express();
-
+ 
 // MIDDLEWARE
 // Passing data through body
 app.use(cors());

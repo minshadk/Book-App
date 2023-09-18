@@ -5,13 +5,11 @@ const baseURL = "http://localhost:5000/";
 //get request
 const get = async (path, headers = {}, params = {}) => {
   //generating url
-  //   const url = `${baseURL}${path}`;
-  const url = `${path}`;
-  console.log(url);
+  const url = `${baseURL}${path}`;
+  // console.log(url);
   //generating the request
   const response = await fetch(url);
-  console.log(response)
-  return response.data;
+  return response;
 };
 
 //post request

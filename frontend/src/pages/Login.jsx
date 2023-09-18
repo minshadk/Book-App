@@ -1,10 +1,15 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
+import { useNavigate } from "react-router-dom";
+
+import { useAuthContext } from "../hooks/useAuthContext";
 
 import TextInput from "../components/Inputs/TextInput";
 
 const Login = () => {
+  const navigate = useNavigate();
+  const { dispatch } = useAuthContext();
+
   const [userName, setUserName] = useState();
-  // const [email, setEmail] = useState();
   const [password, setPassword] = useState();
 
   const handleFormSubmit = async () => {
@@ -12,7 +17,6 @@ const Login = () => {
       userName,
       password,
     };
-    console.log(userDetails);
     const response = await fetch("/user/login", {
       method: "POST",
       body: JSON.stringify({ userName, password }),
@@ -21,8 +25,11 @@ const Login = () => {
       },
     });
     const json = await response.json();
+    // save the user to local storage
     localStorage.setItem("token", json.data.userData.token);
-    console.log(json.data.userData.token);
+    dispatch({ type: "LOGIN", payload: json });
+    if (response.ok) navigate("/");
+
     // if (response.ok) console.log("you logedn in sussefully");
   };
   return (
